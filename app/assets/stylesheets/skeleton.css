@@ -308,7 +308,7 @@ label > .label-body {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
   list-style: none;
-  border: 1px solid rgb(70, 6, 92); }
+  border: 1px solid rgb(70, 6, 92); 
  }
 ol {
   list-style: decimal inside; }
