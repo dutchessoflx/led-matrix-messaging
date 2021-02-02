@@ -1,0 +1,9 @@
+
+
+<%= form_with model:@message, local:true do |f| %>
+
+<%= f.label :message_content, "What do you want to say?" %>
+<%= f.text_field :message_content %>
+<br>
+<%= f.submit "Send Message to Matrix" %>
+<%end %>

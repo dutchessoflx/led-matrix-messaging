@@ -1,0 +1,15 @@
+
+
+
+<h1>Previously sent Messages</h1>
+
+<%@messages.each do |m| %>
+<ul>
+
+  <li>Message: <%= m.message_content %> </li>
+  <li>Time Sent: <%= m.created_at.strftime('%d %b %Y %H:%M:%S') %> </li>
+
+</ul>
+<%end%>
+
+<%= link_to "Send new message", new_message_path, class:"button button-primary" %>
