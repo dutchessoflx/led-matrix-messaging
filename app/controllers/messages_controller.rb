@@ -10,6 +10,9 @@ class MessagesController < ApplicationController
     MQTT::Client.connect('mqtt://breelamp:ZbMY6$T0*2y0@192.168.0.162') do |c|
         c.publish('brookeledmatrix', text)
       end
+      # MQTT::Client.connect('mqtt://homeAssistant:4HyIJ02ofOYqWrGkcQ6s@m12.cloudmqtt.com', 19070) do |c|
+      #     c.publish('brookeledmatrix', text)
+      #   end
 
     redirect_to messages_path
   end
