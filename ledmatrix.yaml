@@ -1,0 +1,112 @@
+esphome:
+  name: brookeledmatrix
+  platform: ESP8266
+  board: d1_mini
+
+wifi:
+  ssid: "***********"
+  password: "***********"
+
+  manual_ip:
+    static_ip: 192.168.0.110
+    gateway: 192.168.0.1
+    subnet: 255.255.255.0
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Brookeledmatrix Fallback Hotspot"
+    password: "ravenraven"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+globals:
+   - id: message_content
+     type: std::string
+     restore_value: no
+     initial_value: ' "a b c d e f g h i j k l m n o p q r s t u v w x y z" '
+spi:
+  clk_pin: D3
+  mosi_pin: D7
+
+display:
+  - platform: max7219digit
+    id: main_display
+    cs_pin: D2
+    num_chips: 1
+    intensity: 15
+    rotate_chip: 90
+    scroll_mode: CONTINUOUS
+
+    lambda: |-
+      it.print(0, 0, id(digit_font), id(message_content).c_str());
+
+#     id(mqtt_client).subscribe("brookeledmatrix", [=](const std::string &payload) {
+
+#     // do something with payload
+# });
+
+
+
+
+font:
+  - file: "pixelmix.ttf"
+    id: digit_font
+    size: 6
+
+mqtt:
+  id: mqtt_client
+  broker: 192.168.0.162
+  port: 1883
+  username: breelamp
+  password: ZbMY6$T0*2y0
+  discovery: true
+  discovery_prefix: homeassistant
+
+  # client.get do |topic,message|
+  # display.print(0, 0, id(digit_font), message);
+  # Block is executed for every message received
+    # end
+
+  on_message:
+    topic: 'brookeledmatrix'
+    qos: 0
+    # msg: "Received \n{} \nto\n {}\n".format(str(msg.payload), msg.topic);
+    then:
+
+# #         - lambda: |-
+#         main_display->print(0, 0, id(digit_font), "HELLO!   !");
+#         id(mqtt_client).subscribe("brookeledmatrix", [=](const std::string &payload) {
+#       logger.log: payload
+#     # // do something with payload
+# });
+
+      - logger.log: msg
+      - lambda: |-
+                id(message_content) = x;
+
+
+
+
+          # topic,message = client.get;
+          # client.get do |topic,message|
+          #   # logger.log: message
+          #     main_display->print(0, 0, id(digit_font), message);
+          #   end
+
+# logger:
+#   # ...
+#   on_message:
+#     level: ERROR
+#     then:
+#       - mqtt.publish:
+#           topic: some/topic
+#           payload: !lambda |-
+#             return "Triggered on_message with level " + std::to_string(level) + ", tag " + tag + " and message " + message;
