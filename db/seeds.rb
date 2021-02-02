@@ -14,4 +14,4 @@ print 'creating messages...'
 Message.create!( message_content: "Hello");
 Message.create!( message_content: ":)");
 
-print `Created #{Message.count} messages.
+print `Created #{Message.count} messages.`
