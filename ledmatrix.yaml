@@ -31,27 +31,37 @@ globals:
    - id: message_content
      type: std::string
      restore_value: no
-     initial_value: ' "a b c d e f g h i j k l m n o p q r s t u v w x y z" '
+     initial_value: ' "J" '
+   - id: message_received
+     type: int
+     restore_value: no
+     initial_value: '0'
+
+time:
+  - platform: sntp
+    id: homeassistant_time
+
 spi:
   clk_pin: D3
   mosi_pin: D7
+
 
 display:
   - platform: max7219digit
     id: main_display
     cs_pin: D2
-    num_chips: 1
+    num_chips: 2
     intensity: 15
     rotate_chip: 90
     scroll_mode: CONTINUOUS
+    update_interval: 5s
 
     lambda: |-
-      it.print(0, 0, id(digit_font), id(message_content).c_str());
-
-#     id(mqtt_client).subscribe("brookeledmatrix", [=](const std::string &payload) {
-
-#     // do something with payload
-# });
+      if(id(message_received) == 1) {
+        it.print(0, 0, id(digit_font), id(message_content).c_str());
+      } else {
+        it.strftime(0, 0, id(digit_font), "%I:%M:%S %p", id(homeassistant_time).now());
+      }
 
 
 
@@ -70,43 +80,15 @@ mqtt:
   discovery: true
   discovery_prefix: homeassistant
 
-  # client.get do |topic,message|
-  # display.print(0, 0, id(digit_font), message);
-  # Block is executed for every message received
-    # end
+
 
   on_message:
     topic: 'brookeledmatrix'
     qos: 0
-    # msg: "Received \n{} \nto\n {}\n".format(str(msg.payload), msg.topic);
-    then:
 
-# #         - lambda: |-
-#         main_display->print(0, 0, id(digit_font), "HELLO!   !");
-#         id(mqtt_client).subscribe("brookeledmatrix", [=](const std::string &payload) {
-#       logger.log: payload
-#     # // do something with payload
-# });
+    then:
 
       - logger.log: msg
       - lambda: |-
                 id(message_content) = x;
-
-
-
-
-          # topic,message = client.get;
-          # client.get do |topic,message|
-          #   # logger.log: message
-          #     main_display->print(0, 0, id(digit_font), message);
-          #   end
-
-# logger:
-#   # ...
-#   on_message:
-#     level: ERROR
-#     then:
-#       - mqtt.publish:
-#           topic: some/topic
-#           payload: !lambda |-
-#             return "Triggered on_message with level " + std::to_string(level) + ", tag " + tag + " and message " + message;
+                id(message_received) = 1;
