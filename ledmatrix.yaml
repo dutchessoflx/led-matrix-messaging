@@ -14,8 +14,8 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Brookeledmatrix Fallback Hotspot"
-    password: "ravenraven"
+    ssid: "************"
+    password: "*******"
 
 captive_portal:
 
@@ -65,8 +65,8 @@ mqtt:
   id: mqtt_client
   broker: 192.168.0.162
   port: 1883
-  username: breelamp
-  password: ZbMY6$T0*2y0
+  username: *******
+  password: **********
   discovery: true
   discovery_prefix: homeassistant
 

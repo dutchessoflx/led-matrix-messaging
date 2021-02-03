@@ -55,3 +55,4 @@ end
 
 gem 'pry-rails'
 gem 'mqtt', :git => 'https://github.com/njh/ruby-mqtt.git'
+gem 'rack-cors'
