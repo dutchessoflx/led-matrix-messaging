@@ -67,7 +67,7 @@ display:
 
 
 font:
-  - file: "pixelmix.ttf"
+  - file: "led-matrix.ttf"
     id: digit_font
     size: 6
 

@@ -10,7 +10,7 @@ class MessagesController < ApplicationController
   def create
     headers['Access-Control-Allow-Origin'] = '*'
     @message = Message.create message_params
-    text = @message.message_content.upcase
+    text = @message.message_content
 
     MQTT::Client.connect('mqtt://breelamp:ZbMY6$T0*2y0@192.168.0.162') do |c|
         c.publish('brookeledmatrix', text)
